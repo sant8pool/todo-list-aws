@@ -15,12 +15,6 @@ Parameters:
       - staging
       - production
     Description: Enter staging or production. Default is default  
-    
-Parameters:
-  DummyParameter:
-    Type: String
-    Default: "force-update"
-    Description: "This is a dummy parameter to force an update"
   
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
