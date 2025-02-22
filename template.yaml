@@ -16,6 +16,11 @@ Parameters:
       - production
     Description: Enter staging or production. Default is default  
 
+    DummyParameter:
+    Type: String
+    Default: "force-update"
+    Description: "This is a dummy parameter to force an update"
+  
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
@@ -131,6 +136,5 @@ Outputs:
     Description: "API Gateway endpoint URL for ${opt:stage} stage for Delete TODO"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/todos/{id}"
 
-Metadata:
-  LastUpdate: "2025-02-22"
+
 
