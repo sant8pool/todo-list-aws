@@ -15,8 +15,9 @@ Parameters:
       - staging
       - production
     Description: Enter staging or production. Default is default  
-
-    DummyParameter:
+    
+Parameters:
+  DummyParameter:
     Type: String
     Default: "force-update"
     Description: "This is a dummy parameter to force an update"
