@@ -5,7 +5,7 @@ version = 0.1
 stack_name = "todo-list-aws"
 s3_prefix = "todo-list-aws"
 region = "us-east-1"
-capabilities = "CAPABILITY_IAM, CAPABILITY_NAMED_IAM"
+capabilities = "CAPABILITY_IAM"
 parameter_overrides = "Stage=\"default\""
 image_repositories = []
 
@@ -25,6 +25,6 @@ image_repositories = []
 stack_name = "todo-list-aws-production"
 s3_prefix = "todo-list-aws"
 region = "us-east-1"
-capabilities = "CAPABILITY_IAM"
+capabilities = "CAPABILITY_IAM, CAPABILITY_NAMED_IAM"
 parameter_overrides = "Stage=\"production\""
 image_repositories = []
