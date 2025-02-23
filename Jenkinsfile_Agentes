@@ -11,6 +11,10 @@ pipeline {
             steps {
                 git branch: 'develop', url: 'https://github.com/sant8pool/todo-list-aws.git', credentialsId: env.gitCredentialsId
                 sh 'echo "PYTHONPATH is set to: $PYTHONPATH"'
+                // Descargar el archivo samconfig.toml desde el otro repositorio
+                sh '''
+                wget https://raw.githubusercontent.com/sant8pool/todo-list-aws-config/staging/samconfig.toml -O samconfig.toml
+                '''
                 sh 'whoami'
                 sh 'hostname'
             }
@@ -44,7 +48,7 @@ pipeline {
                 script {
                     catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                         sh 'sam build'
-                        sh 'sam deploy --config-env staging --config-file samconfig.toml --resolve-s3 | true'
+                        sh 'sam deploy --config-env staging --config-file samconfig.toml --resolve-s3'
         
                         // Obtener la API URL y depurar su valor
                         def apiUrl = sh(script: """
