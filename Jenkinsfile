@@ -11,6 +11,12 @@ pipeline {
             steps {
                 git branch: 'develop', url: 'https://github.com/sant8pool/todo-list-aws.git', credentialsId: env.gitCredentialsId
                 sh 'echo "PYTHONPATH is set to: $PYTHONPATH"'
+                
+                // Descargar el archivo samconfig.toml desde el otro repositorio
+                sh '''
+                wget https://raw.githubusercontent.com/sant8pool/todo-list-aws-config/staging/samconfig.toml -O samconfig.toml
+                '''
+                
             }
         }
         
@@ -69,14 +75,30 @@ pipeline {
                     // Hacer checkout de la rama master
                     sh 'git checkout master'
         
-                    // Mergear la rama develop en master
-                    sh 'git merge develop'
+                    // Mergear la rama develop en master sin hacer commit
+                    sh '''
+                        git merge develop --no-commit --no-ff || true
+                    '''
         
-                    // Asegurar que las credenciales se pasen correctamente al hacer el git push
+                    // Restaurar Jenkinsfile y Jenkinsfile_Agentes desde la rama master (para excluirlos del merge)
+                    sh '''
+                        git checkout origin/master -- Jenkinsfile Jenkinsfile_Agentes
+                        git add Jenkinsfile Jenkinsfile_Agentes
+                    '''
+        
+                    // Verificar si hay algún otro conflicto en los archivos y solucionarlo si es necesario
+                    sh '''
+                        if git diff --name-only --diff-filter=U; then
+                            git diff --name-only --diff-filter=U
+                        fi
+                    '''
+        
+                    // Realizar commit y push de los cambios
                     withCredentials([usernamePassword(credentialsId: env.gitCredentialsId, usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASSWORD')]) {
                         sh '''
                             git config --global user.name "Tu Nombre"
                             git config --global user.email "tu-correo@dominio.com"
+                            git commit -m "Merge develop into master, exclude Jenkinsfile and Jenkinsfile_Agentes"
                             git push https://$GIT_USER:$GIT_PASSWORD@github.com/sant8pool/todo-list-aws.git master
                         '''
                     }    
