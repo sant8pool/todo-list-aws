@@ -11,6 +11,10 @@ pipeline {
             steps {
                 git branch: 'master', url: 'https://github.com/sant8pool/todo-list-aws.git', credentialsId: env.gitCredentialsId
                 sh 'echo "PYTHONPATH is set to: $PYTHONPATH"'
+                // Descargar el archivo samconfig.toml desde el otro repositorio
+                sh '''
+                wget https://raw.githubusercontent.com/sant8pool/todo-list-aws-config/production/samconfig.toml -O samconfig.toml
+                '''
             }
         }
        
